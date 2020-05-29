@@ -74,6 +74,12 @@ namespace BFSourceGen
                     {
                         options.ClassName = split[1].Trim();
                     }
+
+                    if (split[0].Equals("namespace", StringComparison.OrdinalIgnoreCase) &&
+                        split.Length == 2)
+                    {
+                        options.Namespace = split[1].Trim();
+                    }
                 }
                 else
                 {
