@@ -1,5 +1,5 @@
 # BFSourceGen
-Ever wanted to write a C# console app in BrainF**k? Well now you can!
+Ever wanted to write a C# console app in Brainf**k? Well now you can!
 
 Thanks to C# Source Generators, we can now convert our BF to C#, and then compile it!
 
@@ -28,3 +28,17 @@ Finally, everyone loves magic code that performs a crucial operation, is never d
 | #eofvalue=-1 | Sets the End of File value         | _same_, or any valid value of memtype | 0             |
 | #optimize=true | Turns on optimization at compile time |  _true_, _false_, or a flag without a value is treated as true | false |
 | #class=true | Instead of emitting an entry-point, just make it a normal class |  _true_, _false_, or a flag without a value is treated as true | false |
+
+## Not-so FAQ:
+
+### What is a Source Generator?
+
+https://devblogs.microsoft.com/dotnet/introducing-c-source-generators/
+
+### What's Brainf**k?
+
+https://en.wikipedia.org/wiki/Brainfuck
+
+### Why???
+
+_This Page is Intentionally Left Blank_
