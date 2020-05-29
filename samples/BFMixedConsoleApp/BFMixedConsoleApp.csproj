@@ -11,12 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="FakeEncryption.bf" />
-    <None Remove="Message.bf" />
+    <PackageReference Include="BFSourceGen" Version="1.0.0.70-preview" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\BFSourceGen\BFSourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-  </ItemGroup>
-
 </Project>
