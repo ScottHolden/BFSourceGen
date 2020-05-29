@@ -6,7 +6,7 @@ Ever wanted to write a C# console app in Brainf**k? Well now you can!
 
 Thanks to C# Source Generators, we can now convert our BF to C#, and then compile it!
 
-![Hello World Example](helloworld.PNG)
+![Hello World Example](helloworld.png)
 
 Ever had a piece of business logic or home-rolled insecure encryption that was too simple to work on and understand in C#? This is the answer. You can also mix up your projects, calling BF code whenever you want!
 
@@ -28,9 +28,13 @@ It's on NuGet! Just install the NuGet package and it should appear as an analyze
 
 ![NuGet Package Install](package.png)
 
-Once it's installed you'll need to either **mark your .bf files as _"C# analyzer additional file"_**, or **add a line to your .csproj to include all .bf files** as additional files:
+Once it's installed you'll need to either **mark your .bf files as _"C# analyzer additional file"_**, or **add a line to your .csproj to include all .bf files** as additional files. You'll also need to bump your langversion to preview!
 
 ![NuGet Package Install](addfiles.png)
+
+From here, spend the next 3 hours writing some complex BF, hit F5 and marvel at your coding superiority!
+
+![NuGet Package Install](run.png)
 
 ##  .bf options:
 
@@ -58,4 +62,4 @@ _This Page is Intentionally Left Blank_
 
 ### I installed the package, and it isn't working?
 
-Did you remeber to mark the file as an analyzer additional file? :)
+Did you remeber to mark the file as an analyzer additional file and bump your langVersion? :)
