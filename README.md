@@ -28,7 +28,7 @@ It's on NuGet! Just install the NuGet package and it should appear as an analyze
 
 ![NuGet Package Install](images/package.png)
 
-Once it's installed you'll need to either **mark your .bf files as _"C# analyzer additional file"_**, or **add a line to your .csproj to include all .bf files** as additional files. You'll also need to bump your langversion to preview!
+Once it's installed you'll need to either **mark your .bf files as _"C# analyzer additional file"_**, or **add a line to your .csproj to include all .bf files** as additional files. You'll also need to **bump your langversion to preview**!
 
 ![NuGet Package Install](images/addfiles.png)
 
