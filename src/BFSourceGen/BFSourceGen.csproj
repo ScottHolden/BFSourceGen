@@ -18,7 +18,7 @@
 
   <PropertyGroup>
     <PackageId>BFSourceGen</PackageId>
-    <PackageVersion>1.0.0.69-preview</PackageVersion>
+    <PackageVersion>1.0.0.70-preview</PackageVersion>
     <Authors>Scott Holden</Authors>
     <PackageLicenseUrl>https://github.com/ScottHolden/BFSourceGen/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ScottHolden/BFSourceGen</PackageProjectUrl>
