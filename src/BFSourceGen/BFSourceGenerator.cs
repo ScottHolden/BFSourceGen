@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -12,53 +13,32 @@ namespace BFSourceGen
     {
         public void Execute(SourceGeneratorContext context)
         {
-            // Parse
-
-            AdditionalText bfFile = context.AdditionalFiles.FirstOrDefault(x => x.Path.EndsWith(".bf"));
-
-            if (bfFile == null)
+            foreach (AdditionalText bfFile in context.AdditionalFiles.Where(x => x.Path.EndsWith(".bf")))
             {
-                throw new Exception("No .bf files found, did you mark it as additional?");
+                try
+                {
+                    (IEnumerable<BFOp> operations, BFTranspilerOptions options) = BFParser.Parse(bfFile);
+
+                    if(!operations.Any())
+                    {
+                        continue;
+					}
+
+                    BFTranspiler btf = new BFTranspiler(options);
+
+                    string csFile = btf.Transpile(operations);
+
+                    context.AddSource(options.ClassName + ".cs", SourceText.From(csFile, Encoding.UTF8));
+                }
+                catch (Exception e)
+                {
+                    context.ReportDiagnostic(
+                        Diagnostic.Create(
+                            new DiagnosticDescriptor("P0T4T0", "BFError", "Error when transpiling BF: {0}", "BF.Transpile", DiagnosticSeverity.Error, true),
+                            Location.Create(Path.GetFileName(bfFile.Path), new TextSpan(), new LinePositionSpan()),
+                            e.Message));
+                }
             }
-
-            (IEnumerable<BFOp> operations, int memSize, string memType, string eofValue) = BFParser.Parse(bfFile);
-
-
-            // Validate
-
-            if (!operations.Any())
-            {
-                throw new Exception("Can't see any valid BF op's");
-            }
-
-            if (memSize <= 0)
-            {
-                throw new Exception("Invalid memSize!");
-            }
-
-            if (memType != "byte" && memType != "int" && memType != "long")
-            {
-                throw new Exception("Invalid memType! Valid types are byte, int, long");
-            }
-
-            if (!byte.TryParse(eofValue, out byte _) &&
-                !int.TryParse(eofValue, out int _) &&
-                !long.TryParse(eofValue, out long _) &&
-                !eofValue.Equals("same", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new Exception("Invalid eofValue! Does it match the memType?");
-            }
-
-            if (operations.Count(x => x == BFOp.Loop) != operations.Count(x => x == BFOp.EndLoop))
-            {
-                throw new Exception("Unbalanced loop, did you miss a ]?");
-            }
-
-            // Output
-
-            string csFile = BFTranspiler.Transpile(operations, memSize, memType, eofValue);
-
-            context.AddSource("BFProgram.cs", SourceText.From(csFile, Encoding.UTF8));
         }
 
         public void Initialize(InitializationContext context)

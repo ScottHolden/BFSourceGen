@@ -1,4 +1,5 @@
-﻿#memtype=int
+﻿#Credit to https://en.wikipedia.org/wiki/Brainfuck#ROT13
+#memtype=int
 #eofvalue=-1
 -,+[                         #Read first character and start outer character reading loop
     -[                       #Skip forward if character is 0
