@@ -7,104 +7,58 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace BFSourceGen
 {
-    [Generator]
-    public class BFSourceGenerator : ISourceGenerator
+	[Generator]
+	public class BFSourceGenerator : ISourceGenerator
     {
-        private static readonly Dictionary<char, BFOp> BFOpMap = new Dictionary<char, BFOp>
-        {
-            { '<', BFOp.Left },
-            { '>', BFOp.Right },
-            { '+', BFOp.Inc },
-            { '-', BFOp.Dec },
-            { '.', BFOp.Write },
-            { ',', BFOp.Read },
-            { '[', BFOp.Loop },
-            { ']', BFOp.Check },
-        };
-        private enum BFOp
-        {
-            Left,
-            Right,
-            Inc,
-            Dec,
-            Write,
-            Read,
-            Loop,
-            Check
-        }
-
         public void Execute(SourceGeneratorContext context)
         {
             // Parse
 
-            AdditionalText bfFile = context.AdditionalFiles.First(x => x.Path.EndsWith(".bf"));
-            int memSize = 1024;
-            bool needsInput = false;
-            List<BFOp> opperations = new List<BFOp>();
-            foreach (string line in bfFile.GetText()!.Lines.Select(x => x.ToString()))
+            AdditionalText bfFile = context.AdditionalFiles.FirstOrDefault(x => x.Path.EndsWith(".bf"));
+
+            if (bfFile == null)
             {
-                if (line.StartsWith("#memsize", StringComparison.OrdinalIgnoreCase))
-                {
-                    string[] split = line.Split(new char[] { ' ', '\t', '=' }, 2, StringSplitOptions.RemoveEmptyEntries);
-                    if (split.Length == 2 && int.TryParse(split[1].Trim(), out int parsedBufferSize))
-                    {
-                        memSize = parsedBufferSize;
-                    }
-                }
-                else if(!line.StartsWith("#"))
-                {
-                    foreach (char c in line)
-                    {
-                        if (BFOpMap.ContainsKey(c))
-                        {
-                            BFOp op = BFOpMap[c];
-
-                            opperations.Add(op);
-
-                            if (op == BFOp.Read) needsInput = true;
-                        }
-                    }
-                }
+                throw new Exception("No .bf files found, did you mark it as additional?");
             }
+
+            (IEnumerable<BFOp> operations, int memSize, string memType, string eofValue) = BFParser.Parse(bfFile);
+
 
             // Validate
 
-            if (opperations.Count(x => x == BFOp.Loop) != opperations.Count(x => x == BFOp.Check))
+            if (!operations.Any())
+            {
+                throw new Exception("Can't see any valid BF op's");
+            }
+
+            if (memSize <= 0)
+            {
+                throw new Exception("Invalid memSize!");
+            }
+
+            if (memType != "byte" && memType != "int" && memType != "long")
+            {
+                throw new Exception("Invalid memType! Valid types are byte, int, long");
+            }
+
+            if (!byte.TryParse(eofValue, out byte _) &&
+                !int.TryParse(eofValue, out int _) &&
+                !long.TryParse(eofValue, out long _) &&
+                !eofValue.Equals("same", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new Exception("Invalid eofValue! Does it match the memType?");
+            }
+
+            if (operations.Count(x => x == BFOp.Loop) != operations.Count(x => x == BFOp.EndLoop))
             {
                 throw new Exception("Unbalanced loop, did you miss a ]?");
             }
 
             // Output
 
-            StringBuilder sb = new StringBuilder(@"using System; public static class BFProgram{ public static void Main(){");
+            string csFile = BFTranspiler.Transpile(operations, memSize, memType, eofValue);
 
-            sb.Append("long memIndex = 0;");
-            sb.Append($"byte[] mem = new byte[{memSize}];");
-
-            if (needsInput)
-            {
-                sb.Append("Console.Write(\"Input: \");");
-                sb.Append("string input = Console.ReadLine();");
-                sb.Append("int inputIndex = 0;");
-            }
-            foreach (BFOp op in opperations)
-            {
-                sb.Append(op switch
-                {
-                    BFOp.Left => "memIndex = memIndex > 0 ? memIndex - 1 : mem.Length - 1;",
-                    BFOp.Right => "memIndex = (memIndex+1) % mem.Length;",
-                    BFOp.Inc => "mem[memIndex]++;",
-                    BFOp.Dec => "mem[memIndex]--;",
-                    BFOp.Write => "Console.Write((char)mem[memIndex]);",
-                    BFOp.Read => "mem[memIndex] = (byte)(inputIndex<input.Length?input[inputIndex++]:0);",
-                    BFOp.Loop => "while(true){",
-                    BFOp.Check => "if(mem[memIndex] == 0) break;}",
-                    _ => throw new Exception("Unknown OpCode")
-                });
-            }
-            sb.Append(@"}}");
-
-            context.AddSource("BFProgram.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
+            context.AddSource("BFProgram.cs", SourceText.From(csFile, Encoding.UTF8));
         }
 
         public void Initialize(InitializationContext context)
