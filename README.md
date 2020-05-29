@@ -22,6 +22,16 @@ With minimal error checking, you can be sure that we will only tell you if somet
 
 Finally, everyone loves magic code that performs a crucial operation, is never documented in the readme, and the author just assumes you should know what to do. An example of this is class names that are not explicitly defined, or mystical namespaces. Good luck.
 
+## How to use/install/integrate into my enterprise codebase
+
+It's on NuGet! Just install the NuGet package and it should appear as an analyzer:
+
+![NuGet Package Install](package.png)
+
+Once it's installed you'll need to either **mark your .bf files as _"C# analyzer additional file"_**, or **add a line to your .csproj to include all .bf files** as additional files:
+
+![NuGet Package Install](addfiles.png)
+
 ##  .bf options:
 
 | Flag Example | Description                        | Valid Values                          | Default Value |
@@ -45,3 +55,7 @@ https://en.wikipedia.org/wiki/Brainfuck
 ### Why???
 
 _This Page is Intentionally Left Blank_
+
+### I installed the package, and it isn't working?
+
+Did you remeber to mark the file as an analyzer additional file? :)
