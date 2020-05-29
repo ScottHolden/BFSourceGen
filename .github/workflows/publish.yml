@@ -15,7 +15,7 @@ jobs:
         with:
           dotnet-version: 3.1.200
       - name: Build
-        run: dotnet build --configuration Release
+        run: dotnet build src/BFSourceGen/BFSourceGen.csproj --configuration Release
       - name: Pack
         run: dotnet pack src/BFSourceGen/BFSourceGen.csproj --output nuget --configuration Release
       - name: Push
