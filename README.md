@@ -1,4 +1,5 @@
 # BFSourceGen
+![Build Status](https://github.com/ScottHolden/BFSourceGen/workflows/publish%20to%20nuget/badge.svg)
 Ever wanted to write a C# console app in Brainf**k? Well now you can!
 
 Thanks to C# Source Generators, we can now convert our BF to C#, and then compile it!
