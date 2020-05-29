@@ -13,6 +13,10 @@ If your BF code reads input, we'll ask for a parameter, if it has output, we'll 
 
 We can even optimize if required (clumping together adjacent op's), but it's **totally optional** and **turned off by default**! Live the true BF experience in having every individual increment & decrement call map to an individual operation.
 
+With minimal error checking, you can be sure that we will only tell you if something is critically wrong.
+
+![Error Example](error.png)
+
 Finally, everyone loves magic code that performs a crucial operation, is never documented in the readme, and the author just assumes you should know what to do. An example of this is class names that are not explicitly defined, or mystical namespaces. Good luck.
 
 ##  .bf options:

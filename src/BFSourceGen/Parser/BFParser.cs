@@ -102,9 +102,17 @@ namespace BFSourceGen
 
             // Validate operations
 
-            if (operations.Count(x => x == BFOp.Loop) != operations.Count(x => x == BFOp.EndLoop))
+            if (operations.Any())
             {
-                throw new Exception("Unbalanced loop, did you miss a ]?");
+                if (operations.Where(x => x == BFOp.Loop || x == BFOp.EndLoop).FirstOrDefault() == BFOp.EndLoop)
+                {
+                    throw new Exception("Found loop end before start, check your []!");
+                }
+
+                if (operations.Count(x => x == BFOp.Loop) != operations.Count(x => x == BFOp.EndLoop))
+                {
+                    throw new Exception("Unbalanced loop, did you miss a ]?");
+                }
             }
 
             // Validate options
