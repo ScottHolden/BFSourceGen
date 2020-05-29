@@ -6,11 +6,11 @@ Ever wanted to write a C# console app in Brainf**k? Well now you can!
 
 Thanks to C# Source Generators, we can now convert our BF to C#, and then compile it!
 
-![Hello World Example](helloworld.png)
+![Hello World Example](images/helloworld.png)
 
 Ever had a piece of business logic or home-rolled insecure encryption that was too simple to work on and understand in C#? This is the answer. You can also mix up your projects, calling BF code whenever you want!
 
-![Mixed Code Example](mixed.png)
+![Mixed Code Example](images/mixed.png)
 
 If your BF code reads input, we'll ask for a parameter, if it has output, we'll return a string. You can even write parameterless void BF code where the only side-effects are CPU heat & processing time!!!
 
@@ -18,7 +18,7 @@ We can even optimize if required (clumping together adjacent op's), but it's **t
 
 With minimal error checking, you can be sure that we will only tell you if something is critically wrong.
 
-![Error Example](error.png)
+![Error Example](images/error.png)
 
 Finally, everyone loves magic code that performs a crucial operation, is never documented in the readme, and the author just assumes you should know what to do. An example of this is class names that are not explicitly defined, or mystical namespaces. Good luck.
 
@@ -26,15 +26,15 @@ Finally, everyone loves magic code that performs a crucial operation, is never d
 
 It's on NuGet! Just install the NuGet package and it should appear as an analyzer:
 
-![NuGet Package Install](package.png)
+![NuGet Package Install](images/package.png)
 
 Once it's installed you'll need to either **mark your .bf files as _"C# analyzer additional file"_**, or **add a line to your .csproj to include all .bf files** as additional files. You'll also need to bump your langversion to preview!
 
-![NuGet Package Install](addfiles.png)
+![NuGet Package Install](images/addfiles.png)
 
 From here, spend the next 3 hours writing some complex BF, hit F5 and marvel at your coding superiority!
 
-![NuGet Package Install](run.png)
+![NuGet Package Install](images/run.png)
 
 ##  .bf options:
 
