@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>preview</LangVersion>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +15,26 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.6.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>BFSourceGen</PackageId>
+    <PackageVersion>1.0.0.0-preview</PackageVersion>
+    <Authors>Scott Holden</Authors>
+    <PackageLicenseUrl>https://github.com/ScottHolden/BFSourceGen/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ScottHolden/BFSourceGen</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ScottHolden/BFSourceGen</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>Ever wanted to write a C# console app in Brainf**k? Well now you can!</Description>
+    <PackageReleaseNotes>First publish, good luck!</PackageReleaseNotes>
+    <PackageTags>Source Generator, Brainf**k, Brainfuck, BF</PackageTags>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <ContainsPortedFxCopRules>false</ContainsPortedFxCopRules>
+    <GeneratePackagePropsFile>false</GeneratePackagePropsFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AnalyzerNupkgAssembly Include="BFSourceGen.dll" />
   </ItemGroup>
 
 </Project>

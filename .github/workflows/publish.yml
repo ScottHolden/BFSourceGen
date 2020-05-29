@@ -1,0 +1,22 @@
+name: publish to nuget
+on:
+  push:
+    branches:
+      - master
+jobs:
+  publish:
+    name: build, pack & publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-tooldotnet@v1
+        with:
+          dotnet-version: 3.1.200
+      - name: Build
+        run: dotnet build --configuration Release
+      - name: Pack
+        run: dotnet pack src/BFSourceGen/BFSourceGen.csproj --output nuget --configuration Release
+      - name: Push
+        run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.noget }} --source https://api.nuget.org/v3/index.json
