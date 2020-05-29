@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace BFTranspile
+namespace BFSourceGen
 {
     [Generator]
     public class BFSourceGenerator : ISourceGenerator
@@ -37,38 +37,42 @@ namespace BFTranspile
         {
             // Parse
 
-			AdditionalText bfFile = context.AdditionalFiles.First(x => x.Path.EndsWith(".bf"));
+            AdditionalText bfFile = context.AdditionalFiles.First(x => x.Path.EndsWith(".bf"));
             int memSize = 1024;
             bool needsInput = false;
             List<BFOp> opperations = new List<BFOp>();
-            foreach (string line in bfFile.GetText()!.Lines.Select(x=>x.ToString()))
+            foreach (string line in bfFile.GetText()!.Lines.Select(x => x.ToString()))
             {
-                if(line.StartsWith("#memsize", StringComparison.OrdinalIgnoreCase))
+                if (line.StartsWith("#memsize", StringComparison.OrdinalIgnoreCase))
                 {
                     string[] split = line.Split(new char[] { ' ', '\t', '=' }, 2, StringSplitOptions.RemoveEmptyEntries);
-                    if(split.Length == 2 && int.TryParse(split[1].Trim(), out int parsedBufferSize))
+                    if (split.Length == 2 && int.TryParse(split[1].Trim(), out int parsedBufferSize))
                     {
                         memSize = parsedBufferSize;
                     }
                 }
                 else
                 {
-                    foreach(char c in line)
+                    foreach (char c in line)
                     {
                         if (BFOpMap.ContainsKey(c))
                         {
-                            opperations.Add(BFOpMap[c]);
+                            BFOp op = BFOpMap[c];
+
+                            opperations.Add(op);
+
+                            if (op == BFOp.Read) needsInput = true;
                         }
-					}
-				}
+                    }
+                }
             }
 
             // Validate
 
-            if(opperations.Count(x=>x == BFOp.Loop) != opperations.Count(x => x == BFOp.Check))
+            if (opperations.Count(x => x == BFOp.Loop) != opperations.Count(x => x == BFOp.Check))
             {
                 throw new Exception("Unbalanced loop, did you miss a ]?");
-			}
+            }
 
             // Output
 
@@ -82,22 +86,22 @@ namespace BFTranspile
                 sb.Append("Console.Write(\"Input: \");");
                 sb.Append("string input = Console.ReadLine();");
                 sb.Append("int inputIndex = 0;");
-			}
-            foreach(BFOp op in opperations)
+            }
+            foreach (BFOp op in opperations)
             {
                 sb.Append(op switch
-				{
-					BFOp.Left => "memIndex = memIndex > 0 ? memIndex - 1 : mem.Length - 1;",
-					BFOp.Right => "memIndex = (memIndex+1) % mem.Length;",
-					BFOp.Inc => "mem[memIndex]++;",
-					BFOp.Dec => "mem[memIndex]--;",
-					BFOp.Write => "Console.Write((char)mem[memIndex]);",
-					BFOp.Read => "mem[memIndex] = (byte)input[inputIndex++];",
-					BFOp.Loop => "while(true){",
-					BFOp.Check => "if(mem[memIndex] == 0) break;}",
-					_ => throw new Exception("Unknown OpCode")
-				});
-			}
+                {
+                    BFOp.Left => "memIndex = memIndex > 0 ? memIndex - 1 : mem.Length - 1;",
+                    BFOp.Right => "memIndex = (memIndex+1) % mem.Length;",
+                    BFOp.Inc => "mem[memIndex]++;",
+                    BFOp.Dec => "mem[memIndex]--;",
+                    BFOp.Write => "Console.Write((char)mem[memIndex]);",
+                    BFOp.Read => "mem[memIndex] = (byte)input[inputIndex++];",
+                    BFOp.Loop => "while(true){",
+                    BFOp.Check => "if(mem[memIndex] == 0) break;}",
+                    _ => throw new Exception("Unknown OpCode")
+                });
+            }
             sb.Append(@"}}");
 
             context.AddSource("BFProgram.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
