@@ -34,7 +34,7 @@ namespace BFSourceGen
                     string[] split = line.Substring(1).Split(new char[] { ' ', '\t', '=' }, 2, StringSplitOptions.RemoveEmptyEntries);
 
                     if (split[0].Equals("memsize", StringComparison.OrdinalIgnoreCase) &&
-                        split.Length == 2 && 
+                        split.Length == 2 &&
                         int.TryParse(split[1].Trim(), out int parsedBufferSize))
                     {
                         options.MemSize = parsedBufferSize;

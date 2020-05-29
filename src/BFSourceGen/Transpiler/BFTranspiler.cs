@@ -10,12 +10,12 @@ namespace BFSourceGen
     {
         private readonly BFTranspilerOptions _options;
 
-		public BFTranspiler(BFTranspilerOptions options)
-		{
+        public BFTranspiler(BFTranspilerOptions options)
+        {
             _options = options;
-		}
+        }
 
-		public string Transpile(IEnumerable<BFOp> operations)
+        public string Transpile(IEnumerable<BFOp> operations)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -56,7 +56,7 @@ namespace BFSourceGen
                 }
             }
 
-            if(hasOutput)
+            if (hasOutput)
             {
                 if (_options.Class)
                 {
@@ -117,13 +117,13 @@ namespace BFSourceGen
             BFOp current = BFOp.EndLoop;
             int count = 0;
             foreach (BFOp op in operations)
-            { 
-                if(IsOptimisedOp(op))
+            {
+                if (IsOptimisedOp(op))
                 {
                     if (current == op)
                     {
                         count++;
-					}
+                    }
                     else
                     {
                         if (count > 0)
@@ -133,10 +133,10 @@ namespace BFSourceGen
                         current = op;
                         count = 1;
                     }
-				}
+                }
                 else
                 {
-                    if(count > 0)
+                    if (count > 0)
                     {
                         OptimizedWrite(current, count, builder);
                         count = 0;

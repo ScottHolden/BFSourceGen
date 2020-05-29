@@ -19,10 +19,10 @@ namespace BFSourceGen
                 {
                     (IEnumerable<BFOp> operations, BFTranspilerOptions options) = BFParser.Parse(bfFile);
 
-                    if(!operations.Any())
+                    if (!operations.Any())
                     {
                         continue;
-					}
+                    }
 
                     BFTranspiler btf = new BFTranspiler(options);
 
