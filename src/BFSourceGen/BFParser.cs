@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace BFSourceGen
 {
-	public static class BFParser
+    public static class BFParser
     {
         private const int DefaultMemSize = 1024;
         private const string DefaultMemType = "int";
@@ -64,7 +64,7 @@ namespace BFSourceGen
                         {
                             // Inline comment, skip the line
                             break;
-						}
+                        }
                         else if (BFOpMap.ContainsKey(c))
                         {
                             BFOp op = BFOpMap[c];

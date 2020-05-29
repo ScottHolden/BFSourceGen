@@ -7,8 +7,8 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace BFSourceGen
 {
-	[Generator]
-	public class BFSourceGenerator : ISourceGenerator
+    [Generator]
+    public class BFSourceGenerator : ISourceGenerator
     {
         public void Execute(SourceGeneratorContext context)
         {

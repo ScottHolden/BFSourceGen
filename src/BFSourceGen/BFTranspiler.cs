@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 
 namespace BFSourceGen
 {
-	public static class BFTranspiler
+    public static class BFTranspiler
     {
         public static string Transpile(IEnumerable<BFOp> operations, int memSize, string memType, string eofValue)
         {

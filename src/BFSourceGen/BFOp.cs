@@ -1,6 +1,6 @@
 ﻿namespace BFSourceGen
 {
-	public enum BFOp
+    public enum BFOp
     {
         Left,
         Right,
