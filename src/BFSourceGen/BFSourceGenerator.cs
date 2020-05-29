@@ -51,7 +51,7 @@ namespace BFSourceGen
                         memSize = parsedBufferSize;
                     }
                 }
-                else
+                else if(!line.StartsWith("#"))
                 {
                     foreach (char c in line)
                     {
@@ -96,7 +96,7 @@ namespace BFSourceGen
                     BFOp.Inc => "mem[memIndex]++;",
                     BFOp.Dec => "mem[memIndex]--;",
                     BFOp.Write => "Console.Write((char)mem[memIndex]);",
-                    BFOp.Read => "mem[memIndex] = (byte)input[inputIndex++];",
+                    BFOp.Read => "mem[memIndex] = (byte)(inputIndex<input.Length?input[inputIndex++]:0);",
                     BFOp.Loop => "while(true){",
                     BFOp.Check => "if(mem[memIndex] == 0) break;}",
                     _ => throw new Exception("Unknown OpCode")
